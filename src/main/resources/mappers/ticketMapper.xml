@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yesheng.ticket.db.mappers.TicketMapper">
+  <resultMap id="BaseResultMap" type="com.yesheng.ticket.db.po.Ticket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ticket_name" jdbcType="VARCHAR" property="ticketName" />
+    <result column="ticket_desc" jdbcType="VARCHAR" property="ticketDesc" />
+    <result column="ticket_price" jdbcType="DECIMAL" property="ticketPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ticket_name, ticket_desc, ticket_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yesheng.ticket.db.po.Ticket">
+    insert into ticket (id, ticket_name, ticket_desc, 
+      ticket_price)
+    values (#{id,jdbcType=BIGINT}, #{ticketName,jdbcType=VARCHAR}, #{ticketDesc,jdbcType=VARCHAR}, 
+      #{ticketPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yesheng.ticket.db.po.Ticket">
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ticketName != null">
+        ticket_name,
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc,
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="ticketName != null">
+        #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yesheng.ticket.db.po.Ticket">
+    update ticket
+    <set>
+      <if test="ticketName != null">
+        ticket_name = #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price = #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yesheng.ticket.db.po.Ticket">
+    update ticket
+    set ticket_name = #{ticketName,jdbcType=VARCHAR},
+      ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      ticket_price = #{ticketPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.yesheng.ticket.db.po.Ticket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ticket_name" jdbcType="VARCHAR" property="ticketName" />
+    <result column="ticket_desc" jdbcType="VARCHAR" property="ticketDesc" />
+    <result column="ticket_price" jdbcType="DECIMAL" property="ticketPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ticket_name, ticket_desc, ticket_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yesheng.ticket.db.po.Ticket">
+    insert into ticket (id, ticket_name, ticket_desc, 
+      ticket_price)
+    values (#{id,jdbcType=BIGINT}, #{ticketName,jdbcType=VARCHAR}, #{ticketDesc,jdbcType=VARCHAR}, 
+      #{ticketPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yesheng.ticket.db.po.Ticket">
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ticketName != null">
+        ticket_name,
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc,
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="ticketName != null">
+        #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yesheng.ticket.db.po.Ticket">
+    update ticket
+    <set>
+      <if test="ticketName != null">
+        ticket_name = #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price = #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yesheng.ticket.db.po.Ticket">
+    update ticket
+    set ticket_name = #{ticketName,jdbcType=VARCHAR},
+      ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      ticket_price = #{ticketPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.yesheng.ticket.db.po.ticket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="ticket_name" jdbcType="VARCHAR" property="ticketName" />
+    <result column="ticket_desc" jdbcType="VARCHAR" property="ticketDesc" />
+    <result column="ticket_price" jdbcType="DECIMAL" property="ticketPrice" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, ticket_name, ticket_desc, ticket_price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ticket
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yesheng.ticket.db.po.ticket">
+    insert into ticket (id, ticket_name, ticket_desc, 
+      ticket_price)
+    values (#{id,jdbcType=BIGINT}, #{ticketName,jdbcType=VARCHAR}, #{ticketDesc,jdbcType=VARCHAR}, 
+      #{ticketPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yesheng.ticket.db.po.ticket">
+    insert into ticket
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ticketName != null">
+        ticket_name,
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc,
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="ticketName != null">
+        #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yesheng.ticket.db.po.ticket">
+    update ticket
+    <set>
+      <if test="ticketName != null">
+        ticket_name = #{ticketName,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketDesc != null">
+        ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ticketPrice != null">
+        ticket_price = #{ticketPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yesheng.ticket.db.po.ticket">
+    update ticket
+    set ticket_name = #{ticketName,jdbcType=VARCHAR},
+      ticket_desc = #{ticketDesc,jdbcType=VARCHAR},
+      ticket_price = #{ticketPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
