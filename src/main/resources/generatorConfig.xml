@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator
-Configuration 1.0//EN" "https://https://github.com/mybatis/generator/blob/master/core/mybatis-generator-core/src/main/resources/org/mybatis/generator/config/xml/mybatis-generator-config_1_0.dtd">
+Configuration 1.0//EN" "https://github.com/mybatis/generator/blob/master/core/mybatis-generator-core/src/main/resources/org/mybatis/generator/config/xml/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
   <context id="testTables" targetRuntime="MyBatis3">
     <commentGenerator>
