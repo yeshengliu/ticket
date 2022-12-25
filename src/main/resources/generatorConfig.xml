@@ -35,13 +35,19 @@ serverTimezone=GMT"
       targetProject="./src/main/java"> <!-- enableSubPackages:是否让schema作为包的后缀 -->
       <property name="enableSubPackages" value="true"/>
     </javaClientGenerator>
-    <table schema="" tableName="ticket_activity"
-      domainObjectName="TicketActivity" enableCountByExample="false"
-      enableDeleteByExample="false" enableSelectByExample="false"
-      enableUpdateByExample="false" selectByExampleQueryId="false"></table>
-    <table schema="" tableName="ticket"
-      domainObjectName="Ticket" enableCountByExample="false"
-      enableDeleteByExample="false" enableSelectByExample="false"
-      enableUpdateByExample="false" selectByExampleQueryId="false"></table>
+<!--    <table schema="" tableName="ticket_activity"-->
+<!--      domainObjectName="TicketActivity" enableCountByExample="false"-->
+<!--      enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--      enableUpdateByExample="false" selectByExampleQueryId="false"></table>-->
+<!--    <table schema="" tableName="ticket"-->
+<!--      domainObjectName="Ticket" enableCountByExample="false"-->
+<!--      enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--      enableUpdateByExample="false" selectByExampleQueryId="false"></table>-->
+    <table schema="" tableName="ticket_order" domainObjectName="Order"  enableCountByExample="false" enableDeleteByExample="false"
+      enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false">
+    </table>
+    <table schema="" tableName="ticket_user" domainObjectName="User"  enableCountByExample="false" enableDeleteByExample="false"
+      enableSelectByExample="false" enableUpdateByExample="false" selectByExampleQueryId="false">
+    </table>
   </context>
 </generatorConfiguration>
