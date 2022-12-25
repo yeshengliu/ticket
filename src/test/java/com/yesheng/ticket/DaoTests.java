@@ -1,15 +1,17 @@
 package com.yesheng.ticket;
 
+import com.yesheng.ticket.db.dao.OrderDao;
 import com.yesheng.ticket.db.dao.TicketActivityDao;
 import com.yesheng.ticket.db.mappers.TicketActivityMapper;
+import com.yesheng.ticket.db.po.Order;
 import com.yesheng.ticket.db.po.TicketActivity;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.List;
 
 @SpringBootTest
 public class DaoTests {
@@ -19,6 +21,9 @@ public class DaoTests {
 
   @Autowired
   private TicketActivityDao ticketActivityDao;
+
+  @Autowired
+  private OrderDao orderDao;
 
   @Test
   void TicketActivityTest() {
@@ -45,4 +50,18 @@ public class DaoTests {
         System.out.println(ticketActivity.toString()));
   }
 
+  @Test
+  void TicketOrderTest() {
+    Order order = new Order();
+    order.setOrderNo("524744128538480650");
+    order.setOrderStatus(1);
+    order.setTicketActivityId(19L);
+    order.setUserId(1234L);
+    order.setOrderAmount(750L);
+    order.setCreateTime(new Date());
+    order.setPayTime(new Date());
+    orderDao.insertOrder(order);
+    System.out.println("====>>>>" +
+        orderDao.queryOrder("524744128538480650"));
+  }
 }
