@@ -62,3 +62,43 @@ INSERT INTO `ticket` VALUES (11, '11', '11', 100.00);
 INSERT INTO `ticket` VALUES (12, '11', '11', 100.00);
 INSERT INTO `ticket` VALUES (999, 'JJ Lin Class A', 'JJ Lin Concert in Seattle Class A', 850.00);
 INSERT INTO `ticket` VALUES (1001, 'JJ Lin Class C', 'JJ Lin Concert in Seattle Class C', 320.00);
+
+-- ----------------------------
+-- Table structure for ticket_order
+-- ----------------------------
+DROP TABLE IF EXISTS `ticket_order`;
+CREATE TABLE `ticket_order`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `order_no` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `order_status` int NOT NULL,
+  `ticket_activity_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL,
+  `order_amount` decimal(10, 0) UNSIGNED NOT NULL,
+  `create_time` datetime(0) NOT NULL,
+  `pay_time` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ticket_order
+-- ----------------------------
+INSERT INTO `ticket_order` VALUES (5, '524743559841189888', 1, 19, 1234, 5888, '2020-11-13 07:44:40', NULL);
+INSERT INTO `ticket_order` VALUES (6, '524744128538480640', 2, 19, 1234, 5888, '2020-11-13 07:46:55', '2020-11-13 08:01:19');
+
+-- ----------------------------
+-- Table structure for ticket_user
+-- ----------------------------
+DROP TABLE IF EXISTS `ticket_user`;
+CREATE TABLE `ticket_user`  (
+ `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+ `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `address` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+ PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of ticket_user
+-- ----------------------------
+
+SET FOREIGN_KEY_CHECKS = 1;
