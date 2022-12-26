@@ -2,20 +2,25 @@ package com.yesheng.ticket.web;
 
 import com.yesheng.ticket.db.dao.TicketActivityDao;
 import com.yesheng.ticket.db.dao.TicketDao;
+import com.yesheng.ticket.db.po.Order;
 import com.yesheng.ticket.db.po.Ticket;
 import com.yesheng.ticket.db.po.TicketActivity;
+import com.yesheng.ticket.services.TicketActivityService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
 public class TicketActivityController {
 
@@ -24,6 +29,9 @@ public class TicketActivityController {
 
   @Autowired
   private TicketDao ticketDao;
+
+  @Autowired
+  TicketActivityService ticketActivityService;
 
   @RequestMapping("/item/{ticketActivityId}")
   public String itemPage(Map<String, Object> resultMap, @PathVariable long ticketActivityId) {
@@ -83,5 +91,25 @@ public class TicketActivityController {
     return "add_success";
   }
 
+  @RequestMapping("/ticket/buy/{userId}/{ticketActivityId}")
+  public ModelAndView ticketCommodity(@PathVariable long userId, @PathVariable long ticketActivityId) {
+    boolean stockValidateResult = false;
 
+    ModelAndView modelAndView = new ModelAndView();
+    try {
+      stockValidateResult = ticketActivityService.ticketStockValidator(ticketActivityId);
+      if (stockValidateResult) {
+        Order order = ticketActivityService.createOrder(ticketActivityId, userId);
+        modelAndView.addObject("resultInfo", "Successfully created order, order ID: " + order.getOrderNo());
+        modelAndView.addObject("orderNo", order.getOrderNo());
+      } else {
+        modelAndView.addObject("resultInfo", "Sorry, the item is sold out");
+      }
+    } catch (Exception e) {
+      log.error("System error" + e.toString());
+      modelAndView.addObject("resultInfo", "Failed to create order");
+    }
+    modelAndView.setViewName("ticket_result");
+    return modelAndView;
+  }
 }

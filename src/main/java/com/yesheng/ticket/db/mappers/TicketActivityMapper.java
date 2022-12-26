@@ -16,5 +16,7 @@ public interface TicketActivityMapper {
 
     int updateByPrimaryKey(TicketActivity record);
 
-  List<TicketActivity> queryTicketActivityByStatus(int activityStatus);
+    List<TicketActivity> queryTicketActivityByStatus(int activityStatus);
+
+    int lockStock(Long id);
 }

@@ -166,4 +166,12 @@
     <include refid="Base_Column_List"/>
     from ticket_activity where activity_status = #{id,jdbcType=SMALLINT}
   </select>
+
+  <update id="lockStock" parameterType="java.lang.Long">
+    update ticket_activity
+    set available_stock = available_stock - 1,
+        lock_stock = lock_stock + 1
+    where id = #{id,jdbcType=BIGINT}
+    and available_stock > 0
+  </update>
 </mapper>

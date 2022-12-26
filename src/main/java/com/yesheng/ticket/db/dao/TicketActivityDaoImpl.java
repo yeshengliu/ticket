@@ -2,11 +2,13 @@ package com.yesheng.ticket.db.dao;
 
 import com.yesheng.ticket.db.mappers.TicketActivityMapper;
 import com.yesheng.ticket.db.po.TicketActivity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class TicketActivityDaoImpl implements TicketActivityDao {
 
@@ -31,5 +33,15 @@ public class TicketActivityDaoImpl implements TicketActivityDao {
   @Override
   public void updateTicketActivity(TicketActivity ticketActivity) {
     ticketActivityMapper.updateByPrimaryKey(ticketActivity);
+  }
+
+  @Override
+  public boolean lockStock(Long ticketActivityId) {
+    int result = ticketActivityMapper.lockStock(ticketActivityId);
+    if (result < 1) {
+      log.error("Failed to lock inventory");
+      return false;
+    }
+    return true;
   }
 }

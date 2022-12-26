@@ -11,4 +11,6 @@ public interface TicketActivityDao {
   public TicketActivity queryTicketActivityById(long activityId);
 
   public void updateTicketActivity(TicketActivity ticketActivity);
+
+  boolean lockStock(Long ticketActivityId);
 }
