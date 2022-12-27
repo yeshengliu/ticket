@@ -62,15 +62,28 @@ public class TicketActivityService {
     return redisService.stockDeductValidator(key);
   }
 
-  public void payOrderProcess(String orderNo) {
+  public void payOrderProcess(String orderNo) throws Exception {
     log.info("Payment complete, order no: " + orderNo);
     Order order = orderDao.queryOrder(orderNo);
-    boolean deductStockResult = ticketActivityDao.deductStock(order.getTicketActivityId());
-    if (deductStockResult) {
-      order.setPayTime(new Date());
-      // order status 0: no available inventory, 1: order created, 2: payment completed
-      order.setOrderStatus(2);
-      orderDao.updateOrder(order);
+    /*
+     * 1. Check if the order exists
+     * 2. Check if the order is payment pending
+     */
+    if (order == null) {
+      log.error("Order does not exist: " + orderNo);
+      return;
+    } else if (order.getOrderStatus() != 1) {
+      log.error("Invalid order status: " + orderNo);
+      return;
     }
+
+    /*
+     * 3. Payment complete
+     */
+    order.setPayTime(new Date());
+    // order status 0: no available inventory, 1: order created, 2: payment completed
+    order.setOrderStatus(2);
+    orderDao.updateOrder(order);
+    rocketMQService.sendMessage("payment_complete", JSON.toJSONString(order));
   }
 }
