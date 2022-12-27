@@ -12,6 +12,7 @@ import com.yesheng.ticket.util.RedisService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -189,5 +190,12 @@ public class TicketActivityController {
   public String payOrder(@PathVariable String orderNo) throws Exception {
     ticketActivityService.payOrderProcess(orderNo);
     return "redirect:/ticket/orderQuery/" + orderNo;
+  }
+
+  @ResponseBody
+  @RequestMapping("ticket/getSystemTime")
+  public String getSystemTime() {
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    return df.format(new Date());
   }
 }
