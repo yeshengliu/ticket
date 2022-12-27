@@ -1,5 +1,8 @@
 package com.yesheng.ticket.web;
 
+import com.alibaba.csp.sentinel.Entry;
+import com.alibaba.csp.sentinel.SphU;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.yesheng.ticket.db.dao.OrderDao;
 import com.yesheng.ticket.db.dao.TicketActivityDao;
@@ -91,9 +94,14 @@ public class TicketActivityController {
 
   @RequestMapping("/activities")
   public String activityList(Map<String, Object> resultMap) {
-    List<TicketActivity> ticketActivities = ticketActivityDao.queryTicketActivityByStatus(1);
-    resultMap.put("ticketActivities", ticketActivities);
-    return "ticket_activity";
+    try (Entry entry = SphU.entry("ticket_activity")) {
+      List<TicketActivity> ticketActivities = ticketActivityDao.queryTicketActivityByStatus(1);
+      resultMap.put("ticketActivities", ticketActivities);
+      return "ticket_activity";
+    } catch (BlockException ex) {
+      log.error("User requested too many times: " + ex.toString());
+      return "wait";
+    }
   }
 
   @RequestMapping("/addTicketActivity")
