@@ -54,4 +54,11 @@ public class TicketActivityDaoImpl implements TicketActivityDao {
     }
     return true;
   }
+
+  @Override
+  public void revertStock(Long ticketActivityId) {
+    ticketActivityMapper.revertStock(ticketActivityId);
+  }
+
+
 }

@@ -15,4 +15,6 @@ public interface TicketActivityDao {
   boolean lockStock(Long ticketActivityId);
 
   boolean deductStock(Long ticketActivityId);
+
+  void revertStock(Long ticketActivityId);
 }
