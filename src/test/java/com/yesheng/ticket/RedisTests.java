@@ -2,6 +2,7 @@ package com.yesheng.ticket;
 
 import com.yesheng.ticket.services.TicketActivityService;
 import com.yesheng.ticket.util.RedisService;
+import java.util.UUID;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,22 @@ public class RedisTests {
   @Test
   public void pushTicketInfoToRedisTest() {
     ticketActivityService.pushTicketInfoToRedis(31);
+  }
+
+  @Test
+  public void testConcurrentAddLock() {
+    for (int i = 0; i < 10; i++) {
+      String requestId = UUID.randomUUID().toString();
+      System.out.println(redisService.getDistributedLock("A", requestId, 1000));
+    }
+  }
+
+  @Test
+  public void testConcurrent() {
+    for (int i = 0; i < 10; i++) {
+      String requestId = UUID.randomUUID().toString();
+      System.out.println(redisService.getDistributedLock("A", requestId, 1000));
+      redisService.releaseDistributedLock("A", requestId);
+    }
   }
 }

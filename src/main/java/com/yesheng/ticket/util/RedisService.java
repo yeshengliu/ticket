@@ -85,4 +85,21 @@ public class RedisService {
     log.info("userId:{} activityId:{} remove_from_purchased_group", userId, activityId);
     jedisClient.close();
   }
+
+  public boolean getDistributedLock(String lockKey, String requestId, int expiryTime) {
+    Jedis jedisClient = jedisPool.getResource();
+    // nxxx - NX: not exists, XX: is exists
+    // expx - EX: seconds, PX: milliseconds
+    String result = jedisClient.set(lockKey, requestId, "NX", "PX", expiryTime);
+    jedisClient.close();
+    return "OK".equals(result);
+  }
+
+  public boolean releaseDistributedLock(String lockKey, String requestId) {
+    Jedis jedisClient = jedisPool.getResource();
+    String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+    Long result = (Long) jedisClient.eval(script, Collections.singletonList(lockKey), Collections.singletonList(requestId));
+    jedisClient.close();
+    return result == 1L;
+  }
 }
