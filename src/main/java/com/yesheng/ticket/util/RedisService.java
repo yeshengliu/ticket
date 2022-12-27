@@ -68,13 +68,15 @@ public class RedisService {
 
   public void addLimitMember(long activityId, long userId) {
     Jedis jedisClient = jedisPool.getResource();
-    jedisClient.sadd("ticketActivity_users" + activityId, String.valueOf(userId));
+    jedisClient.sadd("ticketActivity_users:" + activityId, String.valueOf(userId));
+    log.info("userId:{} activityId:{} add_to_purchased_group", userId, activityId);
     jedisClient.close();
   }
 
-  public void removeLimitMember(long activityId, Long userId) {
+  public void removeLimitMember(long activityId, long userId) {
     Jedis jedisClient = jedisPool.getResource();
-    jedisClient.srem("ticketActivity_users" + activityId, String.valueOf(userId));
+    jedisClient.srem("ticketActivity_users:" + activityId, String.valueOf(userId));
+    log.info("userId:{} activityId:{} remove_from_purchased_group", userId, activityId);
     jedisClient.close();
   }
 }
