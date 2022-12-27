@@ -1,5 +1,6 @@
 package com.yesheng.ticket.web;
 
+import com.alibaba.fastjson.JSON;
 import com.yesheng.ticket.db.dao.OrderDao;
 import com.yesheng.ticket.db.dao.TicketActivityDao;
 import com.yesheng.ticket.db.dao.TicketDao;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,9 +46,38 @@ public class TicketActivityController {
 
   @RequestMapping("/item/{ticketActivityId}")
   public String itemPage(Map<String, Object> resultMap, @PathVariable long ticketActivityId) {
-    TicketActivity ticketActivity = ticketActivityDao.queryTicketActivityById(ticketActivityId);
-    Ticket ticket = ticketDao.queryTicketById(ticketActivity.getTicketId());
+    TicketActivity ticketActivity;
+    Ticket ticket;
 
+    /*
+     * 1. Look up ticket activity in redis
+     * if not in redis, load ticket activity from db
+     */
+    String ticketActivityInfo = redisService.getValue("ticketActivity:" + ticketActivityId);
+    if (StringUtils.isNotEmpty(ticketActivityInfo)) {
+      log.info("Ticket activity load from redis: " + ticketActivityInfo);
+      ticketActivity = JSON.parseObject(ticketActivityInfo, TicketActivity.class);
+    } else {
+      log.info("Ticket activity load from db: " + ticketActivityId);
+      ticketActivity = ticketActivityDao.queryTicketActivityById(ticketActivityId);
+    }
+
+    /*
+     * 2. Look up ticket in redis
+     * if not in redis, load ticket from db
+     */
+    String ticketInfo = redisService.getValue("ticket:" + ticketActivity.getTicketId());
+    if (StringUtils.isNotEmpty(ticketInfo)) {
+      log.info("Ticket load from redis: " + ticketInfo);
+      ticket = JSON.parseObject(ticketInfo, Ticket.class);
+    } else {
+      log.info("Ticket load from db: " + ticketActivity.getTicketId());
+      ticket = ticketDao.queryTicketById(ticketActivity.getTicketId());
+    }
+
+    /*
+     * 3. Put ticket activity information to web components
+     */
     resultMap.put("ticketActivity", ticketActivity);
     resultMap.put("ticket", ticket);
     resultMap.put("salePrice", ticketActivity.getSalePrice());

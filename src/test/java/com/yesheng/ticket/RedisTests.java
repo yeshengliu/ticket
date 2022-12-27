@@ -1,8 +1,10 @@
 package com.yesheng.ticket;
 
+import com.yesheng.ticket.services.TicketActivityService;
 import com.yesheng.ticket.util.RedisService;
 import javax.annotation.Resource;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
@@ -27,5 +29,13 @@ public class RedisTests {
     System.out.println("result:" + result);
     String stock = redisService.getValue("stock:19");
     System.out.println("stock:" + stock);
+  }
+
+  @Autowired
+  TicketActivityService ticketActivityService;
+
+  @Test
+  public void pushTicketInfoToRedisTest() {
+    ticketActivityService.pushTicketInfoToRedis(31);
   }
 }

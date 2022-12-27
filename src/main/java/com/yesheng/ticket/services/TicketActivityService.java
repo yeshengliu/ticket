@@ -3,7 +3,9 @@ package com.yesheng.ticket.services;
 import com.alibaba.fastjson.JSON;
 import com.yesheng.ticket.db.dao.OrderDao;
 import com.yesheng.ticket.db.dao.TicketActivityDao;
+import com.yesheng.ticket.db.dao.TicketDao;
 import com.yesheng.ticket.db.po.Order;
+import com.yesheng.ticket.db.po.Ticket;
 import com.yesheng.ticket.db.po.TicketActivity;
 import com.yesheng.ticket.mq.RocketMQService;
 import com.yesheng.ticket.util.RedisService;
@@ -21,6 +23,9 @@ public class TicketActivityService {
 
   @Autowired
   private TicketActivityDao ticketActivityDao;
+
+  @Autowired
+  private TicketDao ticketDao;
 
   @Autowired
   private RocketMQService rocketMQService;
@@ -60,6 +65,14 @@ public class TicketActivityService {
   public boolean ticketStockValidator(long activityId) {
     String key = "stock:" + activityId;
     return redisService.stockDeductValidator(key);
+  }
+
+  public void pushTicketInfoToRedis(long activityId) {
+    TicketActivity ticketActivity = ticketActivityDao.queryTicketActivityById(activityId);
+    redisService.setValue("ticketActivity:" + activityId, JSON.toJSONString(ticketActivity));
+
+    Ticket ticket = ticketDao.queryTicketById(ticketActivity.getTicketId());
+    redisService.setValue("ticket:" + ticketActivity.getTicketId(), JSON.toJSONString(ticket));
   }
 
   public void payOrderProcess(String orderNo) throws Exception {
