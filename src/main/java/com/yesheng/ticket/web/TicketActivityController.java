@@ -150,11 +150,11 @@ public class TicketActivityController {
        * 1. Verify if the user has placed the order
        * user cannot place multiple orders
        */
-      if (redisService.isInLimitMember(ticketActivityId, userId)) {
-        modelAndView.addObject("resultInfo", "Sorry, you have already purchased this item");
-        modelAndView.setViewName("ticket_result");
-        return modelAndView;
-      }
+//      if (redisService.isInLimitMember(ticketActivityId, userId)) {
+//        modelAndView.addObject("resultInfo", "Sorry, you have already purchased this item");
+//        modelAndView.setViewName("ticket_result");
+//        return modelAndView;
+//      }
 
       /*
        * 2. Verify if there is available stock
