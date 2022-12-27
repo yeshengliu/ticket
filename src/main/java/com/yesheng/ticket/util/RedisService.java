@@ -1,11 +1,13 @@
 package com.yesheng.ticket.util;
 
 import java.util.Collections;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+@Slf4j
 @Service
 public class RedisService {
 
@@ -53,6 +55,26 @@ public class RedisService {
   public void revertStock(String key) {
     Jedis jedisClient = jedisPool.getResource();
     jedisClient.incr(key);
+    jedisClient.close();
+  }
+
+  public boolean isInLimitMember(long activityId, long userId) {
+    Jedis jedisClient = jedisPool.getResource();
+    boolean sismember = jedisClient.sismember("ticketActivity_users:" + activityId, String.valueOf(userId));
+    jedisClient.close();
+    log.info("userId:{} activityId:{} in_purchased_group:{}", userId, activityId, sismember);
+    return sismember;
+  }
+
+  public void addLimitMember(long activityId, long userId) {
+    Jedis jedisClient = jedisPool.getResource();
+    jedisClient.sadd("ticketActivity_users" + activityId, String.valueOf(userId));
+    jedisClient.close();
+  }
+
+  public void removeLimitMember(long activityId, Long userId) {
+    Jedis jedisClient = jedisPool.getResource();
+    jedisClient.srem("ticketActivity_users" + activityId, String.valueOf(userId));
     jedisClient.close();
   }
 }

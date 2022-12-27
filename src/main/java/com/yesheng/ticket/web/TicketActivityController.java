@@ -7,11 +7,13 @@ import com.yesheng.ticket.db.po.Order;
 import com.yesheng.ticket.db.po.Ticket;
 import com.yesheng.ticket.db.po.TicketActivity;
 import com.yesheng.ticket.services.TicketActivityService;
+import com.yesheng.ticket.util.RedisService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,9 @@ public class TicketActivityController {
 
   @Autowired
   OrderDao orderDao;
+
+  @Resource
+  private RedisService redisService;
 
   @RequestMapping("/item/{ticketActivityId}")
   public String itemPage(Map<String, Object> resultMap, @PathVariable long ticketActivityId) {
@@ -101,11 +106,26 @@ public class TicketActivityController {
 
     ModelAndView modelAndView = new ModelAndView();
     try {
+      /*
+       * 1. Verify if the user has placed the order
+       * user cannot place multiple orders
+       */
+      if (redisService.isInLimitMember(ticketActivityId, userId)) {
+        modelAndView.addObject("resultInfo", "Sorry, you have already purchased this item");
+        modelAndView.setViewName("ticket_result");
+        return modelAndView;
+      }
+
+      /*
+       * 2. Verify if there is available stock
+       */
       stockValidateResult = ticketActivityService.ticketStockValidator(ticketActivityId);
       if (stockValidateResult) {
         Order order = ticketActivityService.createOrder(ticketActivityId, userId);
         modelAndView.addObject("resultInfo", "Successfully created order, order ID: " + order.getOrderNo());
         modelAndView.addObject("orderNo", order.getOrderNo());
+        // add the user into purchased group
+        redisService.addLimitMember(ticketActivityId, userId);
       } else {
         modelAndView.addObject("resultInfo", "Sorry, the item is sold out");
       }
