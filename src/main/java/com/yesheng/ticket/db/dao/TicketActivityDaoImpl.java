@@ -44,4 +44,14 @@ public class TicketActivityDaoImpl implements TicketActivityDao {
     }
     return true;
   }
+
+  @Override
+  public boolean deductStock(Long ticketActivityId) {
+    int result = ticketActivityMapper.deductStock(ticketActivityId);
+    if (result < 1) {
+      log.error("Failed to deduct inventory");
+      return false;
+    }
+    return true;
+  }
 }

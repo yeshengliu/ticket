@@ -33,7 +33,7 @@
 							<li class="f-item"><span>企业采购</span></li>
 							<li class="f-item"><span><a href="cooperation.html" target="_blank">合作招商</a></span></li>
 							<li class="f-item"><span><a href="shoplogin.html" target="_blank">商家后台</a></span></li>				
-							<li class="f-item"><span>网站导航</li>
+							<li class="f-item"><span>网站导航</span></li>
 						</ul>
 					</div>
 					
@@ -106,7 +106,7 @@
 									</em>
 								</div>
 								<div class="sendGoods">
-									<span>秒杀活动信息：</span><em th:text="${seckillActivity.name}"></em>
+									<span>秒杀活动信息：</span><em th:text="${ticketActivity.name}"></em>
 								</div>
 								<div class="sendGoods">
 									<span>订单创建时间：</span><em th:text="${#dates.format(order.createTime,'yyyy-MM-dd HH:mm:ss')}"></em>
@@ -128,7 +128,7 @@
 		<em th:switch="${order.orderStatus}">
 			<span th:case="1">
 				<div class="submit">
-					<a class="sui-btn btn-danger btn-xlarge" th:href="@{'/seckill/payOrder/' + ${order.orderNo}}">支付订单金额</a>
+					<a class="sui-btn btn-danger btn-xlarge" th:href="@{'/ticket/payOrder/' + ${order.orderNo}}">支付订单金额</a>
 				</div>
 			</span>
 		</em>

@@ -19,4 +19,6 @@ public interface TicketActivityMapper {
     List<TicketActivity> queryTicketActivityByStatus(int activityStatus);
 
     int lockStock(Long id);
+
+    int deductStock(Long id);
 }

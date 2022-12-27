@@ -1,5 +1,6 @@
 package com.yesheng.ticket.web;
 
+import com.yesheng.ticket.db.dao.OrderDao;
 import com.yesheng.ticket.db.dao.TicketActivityDao;
 import com.yesheng.ticket.db.dao.TicketDao;
 import com.yesheng.ticket.db.po.Order;
@@ -32,6 +33,9 @@ public class TicketActivityController {
 
   @Autowired
   TicketActivityService ticketActivityService;
+
+  @Autowired
+  OrderDao orderDao;
 
   @RequestMapping("/item/{ticketActivityId}")
   public String itemPage(Map<String, Object> resultMap, @PathVariable long ticketActivityId) {
@@ -111,5 +115,28 @@ public class TicketActivityController {
     }
     modelAndView.setViewName("ticket_result");
     return modelAndView;
+  }
+
+  @RequestMapping("/ticket/orderQuery/{orderNo}")
+  public ModelAndView orderQuery(@PathVariable String orderNo) {
+    log.info("Order Lookup, Order No: " + orderNo);
+    Order order = orderDao.queryOrder(orderNo);
+    ModelAndView modelAndView = new ModelAndView();
+
+    if (order != null) {
+      modelAndView.setViewName("order");
+      modelAndView.addObject("order", order);
+      TicketActivity ticketActivity = ticketActivityDao.queryTicketActivityById(order.getTicketActivityId());
+      modelAndView.addObject("ticketActivity", ticketActivity);
+    } else {
+      modelAndView.setViewName("order_wait");
+    }
+    return modelAndView;
+  }
+
+  @RequestMapping("/ticket/payOrder/{orderNo}")
+  public String payOrder(@PathVariable String orderNo) throws Exception {
+    ticketActivityService.payOrderProcess(orderNo);
+    return "redirect:/ticket/orderQuery/" + orderNo;
   }
 }
